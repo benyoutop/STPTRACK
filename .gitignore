@@ -1,0 +1,65 @@
+# Paper and documents that are not part of the public code release
+*.pdf
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# IDE and editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local machine and dataset path configuration
+lib/train/admin/local.py
+lib/test/evaluation/local.py
+
+# Datasets and local caches
+data/
+datasets/
+*.lmdb
+*.mdb
+.cache/
+
+# Model weights, checkpoints, and exported archives
+pretrained_networks/
+checkpoints/
+**/checkpoints/
+*.pth
+*.pth.tar
+*.pt
+*.ckpt
+*.onnx
+*.tar
+*.zip
+
+# Training and evaluation outputs
+output/
+**/output/
+tensorboard/
+wandb/
+logs/
+**/logs/
+tracking_results/
+result_plots/
+debug/
+events.out.tfevents.*
+*.log
+*.pkl
+
+# Generated visualizations and notebooks
+*.ipynb_checkpoints/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
