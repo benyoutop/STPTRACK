@@ -79,7 +79,7 @@ class ODTrackActor(BaseActor):
         assert isinstance(pred_dict, list)
         loss_dict = {}
         total_status = {}
-        total_loss = torch.tensor(0., dtype=torch.float).cuda() # 定义 0 tensor，并指定GPU设备
+        total_loss = torch.tensor(0., dtype=torch.float).cuda()  # Initialize a zero tensor on the GPU.
         
         # generate gt gaussian map
         gt_gaussian_maps_list = generate_heatmap(gt_dict['search_anno'], self.cfg.DATA.SEARCH.SIZE, self.cfg.MODEL.BACKBONE.STRIDE)

@@ -62,7 +62,7 @@ class ODTrack(nn.Module):
 ##########################################
                 # self.queries.append((x[:, :self.token_len].clone()).detach())
                 # print(len(self.queries))
-####################天官賜福###########################
+            # Compute query-guided feature aggregation.
             att = torch.matmul(enc_opt, x[:, len_m:len_m+1].transpose(1, 2))  # (B, HW, N)
             opt = (enc_opt.unsqueeze(-1) * att.unsqueeze(-2)).permute((0, 3, 2, 1)).contiguous()  # (B, HW, C, N) --> (B, N, C, HW)
             

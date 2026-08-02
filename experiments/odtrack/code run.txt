@@ -19,7 +19,7 @@ got10k_test
 --num_gpus
 1
 
-4个基准训练：
+Training on four benchmarks:
 --script
 odtrack
 --config

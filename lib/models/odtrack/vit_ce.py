@@ -149,8 +149,8 @@ class VisionTransformerCE(VisionTransformer):
 
             query = query + self.cls_pos_embed
             self.queries.append(query)
-            ####################gai dong
-            if len(self.queries)>4:     #最多存储4个历史信息   #5个为负面效果
+        #################### Query history update
+            if len(self.queries)>4:     # Store at most 4 historical queries; keeping 5 hurts performance.
                 self.queries.pop(0)
 
             if len(self.queries)>0:
@@ -158,7 +158,7 @@ class VisionTransformerCE(VisionTransformer):
                 query=torch.mean(stacked,dim=0)
             self.aac=self.aac+1
 
-            #######创建全0的token
+            ####### Create all-zero tokens.
             memory=torch.zeros(1,3,768)   #test
             #memory = torch.zeros(24, 3, 768)   #train
             memory=memory.cuda()
@@ -168,14 +168,14 @@ class VisionTransformerCE(VisionTransformer):
                 caijian = m1
             #if self.aac>50000:
             if self.aac > 2:
-                #print("框框計數", self.aa[0][0]) #self.aa  是[0]上一針的box和[1]上上一針的box
-            # 2500第一輪結束，5w第20輪結束
-            # 假设 x 是 256x256x3 的图像
+                #print("Box count", self.aa[0][0])  # self.aa stores the previous box at [0] and the box before it at [1].
+            # 2,500 iterations mark the end of the first epoch; 50,000 mark the end of epoch 20.
+            # Assume x is a 256x256x3 image.
             #
-            # 给定坐标：[center_x, center_y, height, width]
+            # Given coordinates: [center_x, center_y, height, width].
             #
-            # 假设 x 是一个 4 维的 Tensor，形状为 [batch_size, channels, height, width]
-            # 给定坐标：[center_x, center_y, height, width]
+            # Assume x is a 4D tensor shaped [batch_size, channels, height, width].
+            # Given coordinates: [center_x, center_y, height, width].
                 caijian[:,0].clamp_(min=0,max=1)
                 caijian[:, 1].clamp_(min=0, max=1)
                 caijian[:, 0].clamp_(min=0)
@@ -189,10 +189,10 @@ class VisionTransformerCE(VisionTransformer):
                     center_x, center_y = caijian[i][0],caijian[i][1]
                     center_x=max(min(center_x,image_height),0)
                     center_y=max(min(center_y,image_width),0)
-                    #print("坐标",center_x,center_y)
+                    #print("Coordinates",center_x,center_y)
 
 
-            # 计算裁剪区域的左上角和右下角坐标
+            # Calculate the top-left and bottom-right coordinates of the crop.
                     top_left_x = int(center_x - 16)
                     top_left_y = int(center_y - 12)
                     bottom_right_x = int(center_x + 16)
@@ -221,14 +221,14 @@ class VisionTransformerCE(VisionTransformer):
                         cropped_batch[i]=cropped_region
                     cropped_batch[i,:,:cropped_region.shape[1],:cropped_region.shape[2]]=cropped_region
 
-                focusbox=cropped_batch      #聚焦框
-            # 打印裁剪后的形状，应该是 (batch_size, channels, 30, 40)
+                focusbox=cropped_batch      # Focus region.
+            # Print the cropped shape; it should be (batch_size, channels, 30, 40).
                # print(focusbox.shape)      # 24X32=768
                 memory=focusbox
         memory=memory.view(memory.size(0),memory.size(1),-1)
 
 
-            #####################gaidong#######################################
+        ##################### Spatial memory update #######################
         z = z + self.pos_embed_z
         x = x + self.pos_embed_x
 
@@ -248,7 +248,7 @@ class VisionTransformerCE(VisionTransformer):
             x = torch.cat([query, x], dim=1)     # (B, 1+z+x, 768)
             query_len = query.size(1)
 
-        ##############jiaru memory token#################
+            ############## Add memory tokens #################
         x=combine_tokens(memory,x,mode=self.cat_mode)
         ###########################################
         x = self.pos_drop(x)

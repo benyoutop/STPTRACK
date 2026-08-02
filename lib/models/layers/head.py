@@ -160,7 +160,7 @@ class CenterPredictor(nn.Module, ):
         #print(bbox.shape)
         self.box[1]=self.box[0]
         self.box[0]=bbox
-        ###CHAUN  ZHI#####
+        ### Store box history #####
 
 
         return score_map_ctr, bbox, size_map, offset_map

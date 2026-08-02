@@ -13,20 +13,28 @@ htmlcov/
 .venv/
 venv/
 env/
+build/
+dist/
+*.egg-info/
 
 # IDE and editor settings
 .idea/
 .vscode/
+.agents/
+.codex/
 *.swp
 *.swo
+*.bak
+*.tmp
+*~
 
 # Local machine and dataset path configuration
 lib/train/admin/local.py
 lib/test/evaluation/local.py
 
 # Datasets and local caches
-data/
-datasets/
+/data/
+/datasets/
 *.lmdb
 *.mdb
 .cache/
@@ -46,8 +54,10 @@ checkpoints/
 # Training and evaluation outputs
 output/
 **/output/
+**/output*/
 tensorboard/
 wandb/
+runs/
 logs/
 **/logs/
 tracking_results/
