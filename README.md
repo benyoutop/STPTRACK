@@ -36,10 +36,6 @@ STPTrack/
         └── images/
 ```
 
-The exact directory names may differ. Dataset paths are stored in `lib/train/admin/local.py` for training and `lib/test/evaluation/local.py` for evaluation.
-
-GOT-10k has a one-shot evaluation rule: results submitted to its test server must be produced by a model trained only on the official GOT-10k training split. Use `baseline256_got.yaml` for that setting.
-
 ## Code Information
 
 The main directories and entry points are:
